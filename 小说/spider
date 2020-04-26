@@ -1,0 +1,31 @@
+import os
+import requests
+from bs4 import BeautifulSoup
+import re
+if __name__ == '__main__':
+    k = 1
+    os.mkdir('《神医如倾》')
+    url = 'https://www.yidu.la/novel/2/2530/969944.html'
+    while True:
+        page_req = requests.get(url)
+        html = page_req.text.encode('iso-8859-1')
+        bf = BeautifulSoup(html,'lxml')
+        # 章节名字
+        text_tag = bf.find(class_ = 'bookname')
+        tag_name = text_tag.h1.string.replace('《神医如倾》 ','')
+        tag_name = re.sub('[’!"#$%&\'()*+,-./:;<=>?@，。?★、…【】《》？“”‘’！[\\]^_`{|}~\s]+',' ',tag_name)
+        # 章节内容
+        texts = bf.find_all(id = 'content')
+        texts[0].text.replace('\xa0' * 4, '\n')
+        with open('《神医如倾》/%s %s.txt'%(k,tag_name),'w+',encoding='utf-8') as f:
+            f.write(texts[0].text.replace('readx();', ''))
+        # 下一章节链接
+        text_next = bf.find(string = '下一章')
+        next_page = text_next.find_parent('a').get('href')
+        url = next_page
+        if url[-5:] != '.html':
+            print('所有章节已下载完毕！')
+            break
+        else:
+            print('第%s章已下载完毕'%k)
+            k = k+1
