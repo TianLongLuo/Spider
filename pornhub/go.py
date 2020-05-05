@@ -25,7 +25,7 @@ def innerPic(url,header,num):
         basepicurl = fronturl + (x.a.get('href'))
         DownloadPic(basepicurl,header,num,j)
         j = j+1
-
+#开始下载图片
 def DownloadPic(url,header,n1,n2):
     k = 1
     time.sleep(1)
@@ -38,6 +38,7 @@ def DownloadPic(url,header,n1,n2):
         image = requests.get(imageUrl)
         with open('images/%s_%s.jpg' % (n1, n2), 'wb') as f:
             f.write(image.content)
+        global total
         total = total+1
         print('图片爬取成功 已爬取%s张'%total)
     except ReadTimeout as e:
