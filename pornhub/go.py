@@ -30,7 +30,7 @@ def DownloadPic(url,header,n1,n2):
     k = 1
     time.sleep(1)
     try:
-        homeImage = requests.get(url,headers=header,timeout=2)
+        homeImage = requests.get(url,headers=header,timeout=3)
         Image_page = BeautifulSoup(homeImage.text,'lxml')
         Image_url = Image_page.find_all('div',class_='centerImage')
         print('链接获取成功',end=' ')
